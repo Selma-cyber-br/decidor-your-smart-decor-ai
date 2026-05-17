@@ -10,7 +10,9 @@ import {
 
 import appCss from "../styles.css?url";
 import { I18nProvider } from "@/lib/i18n";
+import { AuthProvider } from "@/lib/auth-context";
 import { Header, Footer } from "@/components/Layout";
+import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
@@ -99,11 +101,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1"><Outlet /></main>
-          <Footer />
-        </div>
+        <AuthProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1"><Outlet /></main>
+            <Footer />
+          </div>
+          <Toaster position="top-center" richColors />
+        </AuthProvider>
       </I18nProvider>
     </QueryClientProvider>
   );
