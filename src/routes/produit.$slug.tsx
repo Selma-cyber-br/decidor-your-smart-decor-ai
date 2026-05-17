@@ -33,7 +33,7 @@ function ProductPage() {
   const { t, lang } = useI18n();
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]?.id);
 
-  const variant = product.variants.find((v) => v.id === selectedVariant) ?? product.variants[0];
+  const variant = product.variants.find((v: any) => v.id === selectedVariant) ?? product.variants[0];
   const category = categories.find((c) => c.slug === product.category);
   const inStock = product.stock > 0;
 
@@ -69,7 +69,7 @@ function ProductPage() {
           </div>
           {product.variants.length > 1 && (
             <div className="grid grid-cols-5 gap-3">
-              {product.variants.map((v) => (
+              {product.variants.map((v: any) => (
                 <button
                   key={v.id}
                   onClick={() => setSelectedVariant(v.id)}
@@ -114,7 +114,7 @@ function ProductPage() {
                 {t("similar_variants")}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {product.variants.map((v) => (
+                {product.variants.map((v: any) => (
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariant(v.id)}
