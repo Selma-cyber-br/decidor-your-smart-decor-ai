@@ -14,16 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_projects: {
+        Row: {
+          budget_dzd: number | null
+          created_at: string
+          dimensions: Json
+          id: string
+          palette: Json
+          room_type: string
+          source_image_url: string | null
+          status: Database["public"]["Enums"]["project_status"]
+          style: string
+          user_id: string
+        }
+        Insert: {
+          budget_dzd?: number | null
+          created_at?: string
+          dimensions?: Json
+          id?: string
+          palette?: Json
+          room_type: string
+          source_image_url?: string | null
+          status?: Database["public"]["Enums"]["project_status"]
+          style: string
+          user_id: string
+        }
+        Update: {
+          budget_dzd?: number | null
+          created_at?: string
+          dimensions?: Json
+          id?: string
+          palette?: Json
+          room_type?: string
+          source_image_url?: string | null
+          status?: Database["public"]["Enums"]["project_status"]
+          style?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      generated_designs: {
+        Row: {
+          created_at: string
+          elements: Json
+          id: string
+          image_url: string
+          project_id: string
+          variant_index: number
+        }
+        Insert: {
+          created_at?: string
+          elements?: Json
+          id?: string
+          image_url: string
+          project_id: string
+          variant_index: number
+        }
+        Update: {
+          created_at?: string
+          elements?: Json
+          id?: string
+          image_url?: string
+          project_id?: string
+          variant_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_designs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "ai_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "client" | "fournisseur" | "admin"
+      project_status: "pending" | "processing" | "completed" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +278,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["client", "fournisseur", "admin"],
+      project_status: ["pending", "processing", "completed", "failed"],
+    },
   },
 } as const
