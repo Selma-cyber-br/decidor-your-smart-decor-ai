@@ -11,10 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IaRouteImport } from './routes/ia'
 import { Route as FournisseursRouteImport } from './routes/fournisseurs'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatalogueIndexRouteImport } from './routes/catalogue.index'
 import { Route as ProduitSlugRouteImport } from './routes/produit.$slug'
 import { Route as CatalogueCategoryRouteImport } from './routes/catalogue.$category'
+import { Route as AuthenticatedMesProjetsRouteImport } from './routes/_authenticated/mes-projets'
+import { Route as AuthenticatedCompteRouteImport } from './routes/_authenticated/compte'
+import { Route as AuthenticatedProjetIdRouteImport } from './routes/_authenticated/projet.$id'
+import { Route as AuthenticatedIaNouveauRouteImport } from './routes/_authenticated/ia.nouveau'
 
 const IaRoute = IaRouteImport.update({
   id: '/ia',
@@ -24,6 +30,15 @@ const IaRoute = IaRouteImport.update({
 const FournisseursRoute = FournisseursRouteImport.update({
   id: '/fournisseurs',
   path: '/fournisseurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -46,61 +61,115 @@ const CatalogueCategoryRoute = CatalogueCategoryRouteImport.update({
   path: '/catalogue/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMesProjetsRoute = AuthenticatedMesProjetsRouteImport.update({
+  id: '/mes-projets',
+  path: '/mes-projets',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedCompteRoute = AuthenticatedCompteRouteImport.update({
+  id: '/compte',
+  path: '/compte',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProjetIdRoute = AuthenticatedProjetIdRouteImport.update({
+  id: '/projet/$id',
+  path: '/projet/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedIaNouveauRoute = AuthenticatedIaNouveauRouteImport.update({
+  id: '/ia/nouveau',
+  path: '/ia/nouveau',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/fournisseurs': typeof FournisseursRoute
   '/ia': typeof IaRoute
+  '/compte': typeof AuthenticatedCompteRoute
+  '/mes-projets': typeof AuthenticatedMesProjetsRoute
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue/': typeof CatalogueIndexRoute
+  '/ia/nouveau': typeof AuthenticatedIaNouveauRoute
+  '/projet/$id': typeof AuthenticatedProjetIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/fournisseurs': typeof FournisseursRoute
   '/ia': typeof IaRoute
+  '/compte': typeof AuthenticatedCompteRoute
+  '/mes-projets': typeof AuthenticatedMesProjetsRoute
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue': typeof CatalogueIndexRoute
+  '/ia/nouveau': typeof AuthenticatedIaNouveauRoute
+  '/projet/$id': typeof AuthenticatedProjetIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/auth': typeof AuthRoute
   '/fournisseurs': typeof FournisseursRoute
   '/ia': typeof IaRoute
+  '/_authenticated/compte': typeof AuthenticatedCompteRoute
+  '/_authenticated/mes-projets': typeof AuthenticatedMesProjetsRoute
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue/': typeof CatalogueIndexRoute
+  '/_authenticated/ia/nouveau': typeof AuthenticatedIaNouveauRoute
+  '/_authenticated/projet/$id': typeof AuthenticatedProjetIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/fournisseurs'
     | '/ia'
+    | '/compte'
+    | '/mes-projets'
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue/'
+    | '/ia/nouveau'
+    | '/projet/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/fournisseurs'
     | '/ia'
+    | '/compte'
+    | '/mes-projets'
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue'
+    | '/ia/nouveau'
+    | '/projet/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/fournisseurs'
     | '/ia'
+    | '/_authenticated/compte'
+    | '/_authenticated/mes-projets'
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue/'
+    | '/_authenticated/ia/nouveau'
+    | '/_authenticated/projet/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AuthRoute: typeof AuthRoute
   FournisseursRoute: typeof FournisseursRoute
   IaRoute: typeof IaRoute
   CatalogueCategoryRoute: typeof CatalogueCategoryRoute
@@ -122,6 +191,20 @@ declare module '@tanstack/react-router' {
       path: '/fournisseurs'
       fullPath: '/fournisseurs'
       preLoaderRoute: typeof FournisseursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -152,11 +235,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogueCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/mes-projets': {
+      id: '/_authenticated/mes-projets'
+      path: '/mes-projets'
+      fullPath: '/mes-projets'
+      preLoaderRoute: typeof AuthenticatedMesProjetsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/compte': {
+      id: '/_authenticated/compte'
+      path: '/compte'
+      fullPath: '/compte'
+      preLoaderRoute: typeof AuthenticatedCompteRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/projet/$id': {
+      id: '/_authenticated/projet/$id'
+      path: '/projet/$id'
+      fullPath: '/projet/$id'
+      preLoaderRoute: typeof AuthenticatedProjetIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/ia/nouveau': {
+      id: '/_authenticated/ia/nouveau'
+      path: '/ia/nouveau'
+      fullPath: '/ia/nouveau'
+      preLoaderRoute: typeof AuthenticatedIaNouveauRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedCompteRoute: typeof AuthenticatedCompteRoute
+  AuthenticatedMesProjetsRoute: typeof AuthenticatedMesProjetsRoute
+  AuthenticatedIaNouveauRoute: typeof AuthenticatedIaNouveauRoute
+  AuthenticatedProjetIdRoute: typeof AuthenticatedProjetIdRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCompteRoute: AuthenticatedCompteRoute,
+  AuthenticatedMesProjetsRoute: AuthenticatedMesProjetsRoute,
+  AuthenticatedIaNouveauRoute: AuthenticatedIaNouveauRoute,
+  AuthenticatedProjetIdRoute: AuthenticatedProjetIdRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AuthRoute: AuthRoute,
   FournisseursRoute: FournisseursRoute,
   IaRoute: IaRoute,
   CatalogueCategoryRoute: CatalogueCategoryRoute,
@@ -166,13 +297,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
