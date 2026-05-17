@@ -1,8 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { products, categories, formatDZD } from "@/lib/catalog"
-import type { ProductVariant } from "@/lib/catalog";
+import { products, categories, formatDZD, type ProductVariant } from "@/lib/catalog";
 
 export const Route = createFileRoute("/produit/$slug")({
   component: ProductPage,
