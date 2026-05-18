@@ -70,10 +70,16 @@ function ProjectDetailPage() {
           <ul className="mt-4 divide-y divide-border">
             {(variant?.elements ?? []).map((el, i) => (
               <li key={i} className="py-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
+                <div className="flex items-start gap-3">
+                  <img
+                    src={categoryImage(el.category) ?? ""}
+                    alt={el.name_fr}
+                    className="h-14 w-14 shrink-0 rounded-md border border-border object-cover"
+                    loading="lazy"
+                  />
+                  <div className="flex-1 min-w-0">
                     <div className="text-sm text-foreground">{el.name_fr}</div>
-                    <div className="text-xs text-muted-foreground">{el.category} · {el.description}</div>
+                    <div className="text-xs text-muted-foreground truncate">{el.category} · {el.description}</div>
                   </div>
                   <div className="shrink-0 text-sm text-primary">{formatDZD(el.estimated_price_dzd ?? 0, lang)}</div>
                 </div>
