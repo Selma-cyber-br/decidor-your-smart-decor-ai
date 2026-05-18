@@ -142,7 +142,7 @@ CRITICAL — STRUCTURAL PRESERVATION:
 DESIGN BRIEF:
 - Style: ${p.stylePromptEn}.
 - Color palette (use these exact tones): ${paletteStr}.
-- Budget tier: ~${p.budget.toLocaleString("fr-DZ")} DZD — choose materials/furniture matching this Algerian market budget.
+- Budget tier: ${p.budget > 0 ? `~${p.budget.toLocaleString("fr-DZ")} DZD — choose materials/furniture matching this Algerian market budget` : "no specific budget — use mid-to-premium quality materials suitable for Algerian market"}.
 - Variant direction: ${p.variantSeed}.
 
 OUTPUT: a single hyper-realistic photographic render of the redesigned room, 4K quality, professional interior photography lighting, sharp focus, natural materials and textures. No text, no labels, no watermarks.`;
