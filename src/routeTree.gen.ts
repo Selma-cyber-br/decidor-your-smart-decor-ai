@@ -21,6 +21,7 @@ import { Route as AuthenticatedMesProjetsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedCompteRouteImport } from './routes/_authenticated/compte'
 import { Route as AuthenticatedProjetIdRouteImport } from './routes/_authenticated/projet.$id'
 import { Route as AuthenticatedIaNouveauRouteImport } from './routes/_authenticated/ia.nouveau'
+import { Route as AuthenticatedFournisseursInscriptionRouteImport } from './routes/_authenticated/fournisseurs.inscription'
 
 const IaRoute = IaRouteImport.update({
   id: '/ia',
@@ -81,6 +82,12 @@ const AuthenticatedIaNouveauRoute = AuthenticatedIaNouveauRouteImport.update({
   path: '/ia/nouveau',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFournisseursInscriptionRoute =
+  AuthenticatedFournisseursInscriptionRouteImport.update({
+    id: '/fournisseurs/inscription',
+    path: '/fournisseurs/inscription',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue/': typeof CatalogueIndexRoute
+  '/fournisseurs/inscription': typeof AuthenticatedFournisseursInscriptionRoute
   '/ia/nouveau': typeof AuthenticatedIaNouveauRoute
   '/projet/$id': typeof AuthenticatedProjetIdRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesByTo {
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue': typeof CatalogueIndexRoute
+  '/fournisseurs/inscription': typeof AuthenticatedFournisseursInscriptionRoute
   '/ia/nouveau': typeof AuthenticatedIaNouveauRoute
   '/projet/$id': typeof AuthenticatedProjetIdRoute
 }
@@ -120,6 +129,7 @@ export interface FileRoutesById {
   '/catalogue/$category': typeof CatalogueCategoryRoute
   '/produit/$slug': typeof ProduitSlugRoute
   '/catalogue/': typeof CatalogueIndexRoute
+  '/_authenticated/fournisseurs/inscription': typeof AuthenticatedFournisseursInscriptionRoute
   '/_authenticated/ia/nouveau': typeof AuthenticatedIaNouveauRoute
   '/_authenticated/projet/$id': typeof AuthenticatedProjetIdRoute
 }
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue/'
+    | '/fournisseurs/inscription'
     | '/ia/nouveau'
     | '/projet/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue'
+    | '/fournisseurs/inscription'
     | '/ia/nouveau'
     | '/projet/$id'
   id:
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
     | '/catalogue/$category'
     | '/produit/$slug'
     | '/catalogue/'
+    | '/_authenticated/fournisseurs/inscription'
     | '/_authenticated/ia/nouveau'
     | '/_authenticated/projet/$id'
   fileRoutesById: FileRoutesById
@@ -263,12 +276,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIaNouveauRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/fournisseurs/inscription': {
+      id: '/_authenticated/fournisseurs/inscription'
+      path: '/fournisseurs/inscription'
+      fullPath: '/fournisseurs/inscription'
+      preLoaderRoute: typeof AuthenticatedFournisseursInscriptionRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
   AuthenticatedCompteRoute: typeof AuthenticatedCompteRoute
   AuthenticatedMesProjetsRoute: typeof AuthenticatedMesProjetsRoute
+  AuthenticatedFournisseursInscriptionRoute: typeof AuthenticatedFournisseursInscriptionRoute
   AuthenticatedIaNouveauRoute: typeof AuthenticatedIaNouveauRoute
   AuthenticatedProjetIdRoute: typeof AuthenticatedProjetIdRoute
 }
@@ -276,6 +297,8 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCompteRoute: AuthenticatedCompteRoute,
   AuthenticatedMesProjetsRoute: AuthenticatedMesProjetsRoute,
+  AuthenticatedFournisseursInscriptionRoute:
+    AuthenticatedFournisseursInscriptionRoute,
   AuthenticatedIaNouveauRoute: AuthenticatedIaNouveauRoute,
   AuthenticatedProjetIdRoute: AuthenticatedProjetIdRoute,
 }
@@ -297,3 +320,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
