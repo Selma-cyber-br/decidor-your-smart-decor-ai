@@ -215,12 +215,22 @@ function WizardPage() {
         {/* Step 6 */}
         {step === 6 && (
           <div>
-            <h2 className="mb-2 text-2xl tracking-tight">{t("ai_step_budget")}</h2>
-            <p className="mb-6 text-sm text-muted-foreground">L'IA adaptera les matériaux et le mobilier à votre budget.</p>
-            <input type="range" min={50000} max={5000000} step={10000} value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} className="w-full accent-primary" />
-            <div className="mt-4 text-center text-3xl tracking-tight text-primary">
-              {new Intl.NumberFormat("fr-DZ").format(budget)} DZD
+            <h2 className="mb-2 text-2xl tracking-tight">{t("ai_step_budget")} <span className="text-sm text-muted-foreground">(optionnel)</span></h2>
+            <p className="mb-6 text-sm text-muted-foreground">Si vous le précisez, l'IA adaptera matériaux et mobilier. Sinon, laissez "Non précisé".</p>
+            <div className="mb-4 flex items-center gap-3">
+              <label className="inline-flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={budget === 0} onChange={(e) => setBudget(e.target.checked ? 0 : 300000)} />
+                Non précisé
+              </label>
             </div>
+            {budget > 0 && (
+              <>
+                <input type="range" min={50000} max={5000000} step={10000} value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} className="w-full accent-primary" />
+                <div className="mt-4 text-center text-3xl tracking-tight text-primary">
+                  {new Intl.NumberFormat("fr-DZ").format(budget)} DZD
+                </div>
+              </>
+            )}
             <div className="mt-8 rounded-lg border border-border bg-background/50 p-5 text-sm">
               <h3 className="mb-3 text-xs tracking-wider text-muted-foreground uppercase">Récapitulatif</h3>
               <ul className="space-y-1.5 text-foreground">
@@ -228,6 +238,7 @@ function WizardPage() {
                 <li>Dimensions : <span className="text-muted-foreground">{length}×{width}×{height} m</span></li>
                 <li>Style : <span className="text-muted-foreground">{style?.name_fr}</span></li>
                 <li>Palette : <span className="text-muted-foreground">{palette?.name_fr}</span></li>
+                <li>Budget : <span className="text-muted-foreground">{budget > 0 ? `${new Intl.NumberFormat("fr-DZ").format(budget)} DZD` : "Non précisé"}</span></li>
               </ul>
             </div>
           </div>
