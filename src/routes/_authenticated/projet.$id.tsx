@@ -40,7 +40,7 @@ function ProjectDetailPage() {
         <span className="text-xs tracking-[0.25em] text-accent">{data.style.toUpperCase()}</span>
         <h1 className="mt-2 text-4xl tracking-tight">{data.room_type}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Budget {formatDZD(data.budget_dzd ?? 0, lang)} · {new Date(data.created_at).toLocaleString("fr-DZ")}
+          Budget {data.budget_dzd && data.budget_dzd > 0 ? formatDZD(data.budget_dzd, lang) : "non précisé"} · {new Date(data.created_at).toLocaleString("fr-DZ")}
         </p>
       </div>
 
