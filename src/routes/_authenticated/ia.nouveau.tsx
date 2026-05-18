@@ -27,7 +27,7 @@ function WizardPage() {
   const [height, setHeight] = useState(2.8);
   const [styleSlug, setStyleSlug] = useState<string>("");
   const [paletteSlug, setPaletteSlug] = useState<string>("");
-  const [budget, setBudget] = useState(300000);
+  const [budget, setBudget] = useState(0); // 0 = non précisé (optionnel)
   const [loading, setLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
