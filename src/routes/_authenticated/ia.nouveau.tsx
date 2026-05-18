@@ -41,7 +41,7 @@ function WizardPage() {
     if (step === 3) return length > 0 && width > 0 && height > 0;
     if (step === 4) return !!styleSlug;
     if (step === 5) return !!paletteSlug;
-    if (step === 6) return budget > 0;
+    if (step === 6) return true; // budget optionnel
     return false;
   };
 
