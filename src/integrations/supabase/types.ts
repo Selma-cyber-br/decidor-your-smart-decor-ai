@@ -115,6 +115,69 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_applications: {
+        Row: {
+          artisan_type: string | null
+          category: string
+          city: string
+          created_at: string
+          first_name: string
+          id: string
+          last_name: string
+          payment_method: Database["public"]["Enums"]["supplier_payment"]
+          payment_reference: string | null
+          phone: string
+          plan: Database["public"]["Enums"]["supplier_plan"]
+          product_photos: Json
+          registre_commerce: string
+          status: Database["public"]["Enums"]["supplier_status"]
+          type: Database["public"]["Enums"]["supplier_type"]
+          updated_at: string
+          user_id: string
+          work_samples: Json
+        }
+        Insert: {
+          artisan_type?: string | null
+          category: string
+          city: string
+          created_at?: string
+          first_name: string
+          id?: string
+          last_name: string
+          payment_method?: Database["public"]["Enums"]["supplier_payment"]
+          payment_reference?: string | null
+          phone: string
+          plan?: Database["public"]["Enums"]["supplier_plan"]
+          product_photos?: Json
+          registre_commerce: string
+          status?: Database["public"]["Enums"]["supplier_status"]
+          type: Database["public"]["Enums"]["supplier_type"]
+          updated_at?: string
+          user_id: string
+          work_samples?: Json
+        }
+        Update: {
+          artisan_type?: string | null
+          category?: string
+          city?: string
+          created_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["supplier_payment"]
+          payment_reference?: string | null
+          phone?: string
+          plan?: Database["public"]["Enums"]["supplier_plan"]
+          product_photos?: Json
+          registre_commerce?: string
+          status?: Database["public"]["Enums"]["supplier_status"]
+          type?: Database["public"]["Enums"]["supplier_type"]
+          updated_at?: string
+          user_id?: string
+          work_samples?: Json
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -152,6 +215,10 @@ export type Database = {
     Enums: {
       app_role: "client" | "fournisseur" | "admin"
       project_status: "pending" | "processing" | "completed" | "failed"
+      supplier_payment: "baridimob" | "dhahabia" | "none"
+      supplier_plan: "gratuit" | "premium"
+      supplier_status: "pending" | "approved" | "rejected"
+      supplier_type: "fournisseur" | "artisan"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -281,6 +348,10 @@ export const Constants = {
     Enums: {
       app_role: ["client", "fournisseur", "admin"],
       project_status: ["pending", "processing", "completed", "failed"],
+      supplier_payment: ["baridimob", "dhahabia", "none"],
+      supplier_plan: ["gratuit", "premium"],
+      supplier_status: ["pending", "approved", "rejected"],
+      supplier_type: ["fournisseur", "artisan"],
     },
   },
 } as const

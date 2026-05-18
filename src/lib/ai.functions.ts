@@ -84,7 +84,10 @@ async function extractElements(
   const key = process.env.LOVABLE_API_KEY;
   if (!key) throw new Error("LOVABLE_API_KEY missing");
 
-  const sys = `Tu es un designer d'intérieur algérien. Tu reçois une image de pièce décorée. Tu extrais la liste complète des éléments visibles (peinture, carrelage, mobilier, luminaires, textiles, accessoires). Réponds STRICTEMENT en JSON valide, format: {"elements":[{"name_fr":"...","category":"peinture|carrelage|mobilier|lustre|tapis|rideaux|parquet|cuisine|accessoire","estimated_price_dzd":12000,"description":"courte"}]}. Prix réalistes pour le marché algérien en DZD. Total des prix proche du budget: ${budget} DZD. Style: ${style}. Palette: ${palette}. Minimum 5 éléments, maximum 12.`;
+  const budgetLine = budget > 0
+    ? `Prix réalistes pour le marché algérien en DZD. Total des prix proche du budget: ${budget} DZD.`
+    : `Prix réalistes pour le marché algérien en DZD (gamme moyenne/premium).`;
+  const sys = `Tu es un designer d'intérieur algérien. Tu reçois une image de pièce décorée. Tu extrais la liste complète des éléments visibles (peinture, carrelage, mobilier, luminaires, textiles, accessoires). Réponds STRICTEMENT en JSON valide, format: {"elements":[{"name_fr":"...","category":"peinture|carrelage|mobilier|lustre|tapis|rideaux|parquet|cuisine|accessoire","estimated_price_dzd":12000,"description":"courte"}]}. ${budgetLine} Style: ${style}. Palette: ${palette}. Minimum 5 éléments, maximum 12.`;
 
   const res = await fetch(LOVABLE_AI_URL, {
     method: "POST",
@@ -139,7 +142,7 @@ CRITICAL — STRUCTURAL PRESERVATION:
 DESIGN BRIEF:
 - Style: ${p.stylePromptEn}.
 - Color palette (use these exact tones): ${paletteStr}.
-- Budget tier: ~${p.budget.toLocaleString("fr-DZ")} DZD — choose materials/furniture matching this Algerian market budget.
+- Budget tier: ${p.budget > 0 ? `~${p.budget.toLocaleString("fr-DZ")} DZD — choose materials/furniture matching this Algerian market budget` : "no specific budget — use mid-to-premium quality materials suitable for Algerian market"}.
 - Variant direction: ${p.variantSeed}.
 
 OUTPUT: a single hyper-realistic photographic render of the redesigned room, 4K quality, professional interior photography lighting, sharp focus, natural materials and textures. No text, no labels, no watermarks.`;

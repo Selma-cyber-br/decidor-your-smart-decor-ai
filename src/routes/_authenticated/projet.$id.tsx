@@ -3,8 +3,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectDetail } from "@/lib/ai.functions";
 import { useI18n } from "@/lib/i18n";
-import { formatDZD } from "@/lib/catalog";
+import { formatDZD, categories } from "@/lib/catalog";
 import { useState } from "react";
+
+const categoryImage = (cat: string): string | undefined => {
+  const c = cat.toLowerCase();
+  const match = categories.find((k) => c.includes(k.slug) || k.slug.includes(c));
+  return match?.image ?? categories.find((k) => k.slug === "mobilier")?.image;
+};
 
 export const Route = createFileRoute("/_authenticated/projet/$id")({
   component: ProjectDetailPage,
@@ -34,7 +40,7 @@ function ProjectDetailPage() {
         <span className="text-xs tracking-[0.25em] text-accent">{data.style.toUpperCase()}</span>
         <h1 className="mt-2 text-4xl tracking-tight">{data.room_type}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Budget {formatDZD(data.budget_dzd ?? 0, lang)} · {new Date(data.created_at).toLocaleString("fr-DZ")}
+          Budget {data.budget_dzd && data.budget_dzd > 0 ? formatDZD(data.budget_dzd, lang) : "non précisé"} · {new Date(data.created_at).toLocaleString("fr-DZ")}
         </p>
       </div>
 
@@ -64,10 +70,16 @@ function ProjectDetailPage() {
           <ul className="mt-4 divide-y divide-border">
             {(variant?.elements ?? []).map((el, i) => (
               <li key={i} className="py-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
+                <div className="flex items-start gap-3">
+                  <img
+                    src={categoryImage(el.category) ?? ""}
+                    alt={el.name_fr}
+                    className="h-14 w-14 shrink-0 rounded-md border border-border object-cover"
+                    loading="lazy"
+                  />
+                  <div className="flex-1 min-w-0">
                     <div className="text-sm text-foreground">{el.name_fr}</div>
-                    <div className="text-xs text-muted-foreground">{el.category} · {el.description}</div>
+                    <div className="text-xs text-muted-foreground truncate">{el.category} · {el.description}</div>
                   </div>
                   <div className="shrink-0 text-sm text-primary">{formatDZD(el.estimated_price_dzd ?? 0, lang)}</div>
                 </div>
