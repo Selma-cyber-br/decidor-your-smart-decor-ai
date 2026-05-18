@@ -3,8 +3,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectDetail } from "@/lib/ai.functions";
 import { useI18n } from "@/lib/i18n";
-import { formatDZD } from "@/lib/catalog";
+import { formatDZD, categories } from "@/lib/catalog";
 import { useState } from "react";
+
+const categoryImage = (cat: string): string | undefined => {
+  const c = cat.toLowerCase();
+  const match = categories.find((k) => c.includes(k.slug) || k.slug.includes(c));
+  return match?.image ?? categories.find((k) => k.slug === "mobilier")?.image;
+};
 
 export const Route = createFileRoute("/_authenticated/projet/$id")({
   component: ProjectDetailPage,
