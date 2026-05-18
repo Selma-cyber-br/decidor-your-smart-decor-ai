@@ -20,7 +20,7 @@ function SuppliersPage() {
 
   const start = () => {
     if (user) navigate({ to: "/fournisseurs/inscription" });
-    else navigate({ to: "/auth", search: { redirect: "/fournisseurs/inscription" } });
+    else navigate({ to: "/auth" });
   };
 
   return (
